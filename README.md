@@ -8,16 +8,17 @@ service.
 ## Install
 
 ```bash
-go get github.com/ishemahub/authclient@latest
+go get github.com/ishemahub/go-authclient@latest
 ```
 
 ```go
-import "github.com/ishemahub/authclient"
+import authclient "github.com/ishemahub/go-authclient"
 ```
 
-> Replace `github.com/ishemahub/authclient` with your actual repository path — it
-> must match the `module` line in `go.mod`. Runtime deps: `golang-jwt/jwt/v5`
-> and, for `gin.go`, `gin-gonic/gin` (delete `gin.go` if you don't use Gin).
+> The import path is `github.com/ishemahub/go-authclient`; the package name is
+> `authclient` (the alias above is optional but explicit). Runtime deps:
+> `golang-jwt/jwt/v5` and, for `gin.go`, `gin-gonic/gin` (delete `gin.go` if you
+> don't use Gin).
 
 ## Configuration (from env)
 

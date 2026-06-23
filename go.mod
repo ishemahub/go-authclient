@@ -1,6 +1,4 @@
-// Rename this module path to match the actual GitHub repository you create,
-// e.g. github.com/<your-org>/authclient — it must match for `go get` to work.
-module github.com/ishemahub/authclient
+module github.com/ishemahub/go-authclient
 
 go 1.24
 
