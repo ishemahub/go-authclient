@@ -111,3 +111,32 @@ func TestRejectsExpired(t *testing.T) {
 		t.Fatal("expected expired token to be rejected")
 	}
 }
+
+func TestMultiIssuerDiscovery(t *testing.T) {
+	priv, srv := newIssuer(t) // serves the JWKS at any path
+	iss := srv.URL + "/realms/acme"
+
+	v, err := New(Config{AllowedIssuers: []string{srv.URL + "/realms/"}})
+	if err != nil {
+		t.Fatalf("new: %v", err)
+	}
+
+	c := accessClaims()
+	c["iss"] = iss
+	c["tenant_id"] = "tenant-1"
+	c["tenant"] = "acme"
+
+	claims, err := v.Validate(context.Background(), sign(t, priv, c))
+	if err != nil {
+		t.Fatalf("validate: %v", err)
+	}
+	if claims.TenantID() != "tenant-1" || claims.Tenant != "acme" {
+		t.Fatalf("tenant claims not parsed: %+v", claims)
+	}
+
+	// A token from an issuer outside the allowlist is rejected before any fetch.
+	c["iss"] = "https://evil.example/realms/acme"
+	if _, err := v.Validate(context.Background(), sign(t, priv, c)); err == nil {
+		t.Fatal("expected rejection for issuer outside the allowlist")
+	}
+}
