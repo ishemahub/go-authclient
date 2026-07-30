@@ -48,12 +48,22 @@ type Config struct {
 // Claims is the validated token payload.
 type Claims struct {
 	Email       string   `json:"email"`
+	Name        string   `json:"name"` // display name — handy for "who did the action" without a lookup
 	Roles       []string `json:"roles"`
 	Permissions []string `json:"permissions"`
 	TokenType   string   `json:"token_type"`
 	Tenant      string   `json:"tenant"`
 	TenantIDVal string   `json:"tenant_id"`
 	jwt.RegisteredClaims
+}
+
+// DisplayName returns the token's name claim (falling back to email), for showing
+// who performed an action without a directory lookup.
+func (c *Claims) DisplayName() string {
+	if c.Name != "" {
+		return c.Name
+	}
+	return c.Email
 }
 
 // UserID returns the authenticated user's id (the "sub" claim).
