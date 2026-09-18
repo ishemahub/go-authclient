@@ -15,16 +15,19 @@ import (
 // with Deleted() == true is a tombstone — the user was removed upstream and
 // should be deleted or deactivated in the local directory.
 type UserRecord struct {
-	ID          string     `json:"id"`
-	Username    string     `json:"username"`
-	Email       string     `json:"email"`
-	FirstName   string     `json:"first_name"`
-	LastName    string     `json:"last_name"`
-	PhoneNumber string     `json:"phone_number"`
-	AvatarURL   string     `json:"avatar_url"`
-	IsActive    bool       `json:"is_active"`
-	UpdatedAt   time.Time  `json:"updated_at"`
-	DeletedAt   *time.Time `json:"deleted_at"`
+	ID          string `json:"id"`
+	Username    string `json:"username"`
+	Email       string `json:"email"`
+	FirstName   string `json:"first_name"`
+	LastName    string `json:"last_name"`
+	PhoneNumber string `json:"phone_number"`
+	AvatarURL   string `json:"avatar_url"`
+	IsActive    bool   `json:"is_active"`
+	// Roles are the user's role names in the realm, as the feed sends them
+	// (IshemaUserManager ≥ the version that carries them; empty before).
+	Roles     []string   `json:"roles"`
+	UpdatedAt time.Time  `json:"updated_at"`
+	DeletedAt *time.Time `json:"deleted_at"`
 }
 
 // Deleted reports whether this record is a tombstone (removed upstream).
